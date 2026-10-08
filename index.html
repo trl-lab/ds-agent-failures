@@ -1,0 +1,252 @@
+<title>Agentic DS Failure Analysis</title>
+<meta name="description" content="A benchmark and taxonomy for failure modes in LLM data-science agents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Noto+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: classic academic-project-page flow -- centered hero with pill
+   buttons, a light-banded Abstract, then plain white sections read
+   top-to-bottom (no cards/grids), a plain citation block, simple footer. */
+:root {
+  --bg: #ffffff;
+  --band: #f3f4f6;
+  --border: #e2e4e8;
+  --text: #1c1f23;
+  --text-muted: #565d68;
+  --text-faint: #8b929c;
+  --pill: #1c1f23;
+  --pill-text: #ffffff;
+  --mark: #93392a;
+  --mark-soft: #f7e9e6;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171a; --band: #1c1f23; --border: #2b2f35;
+    --text: #e8eaed; --text-muted: #a3abb8; --text-faint: #717a88;
+    --pill: #e8eaed; --pill-text: #15171a;
+    --mark: #d98f7f; --mark-soft: #2c211e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171a; --band: #1c1f23; --border: #2b2f35;
+  --text: #e8eaed; --text-muted: #a3abb8; --text-faint: #717a88;
+  --pill: #e8eaed; --pill-text: #15171a;
+  --mark: #d98f7f; --mark-soft: #2c211e;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans", -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  padding-inline: 16px;
+}
+.title-font { font-family: "Source Serif 4", Georgia, serif; }
+.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+a { color: inherit; }
+
+.wrap { max-width: 760px; margin: 0 auto; }
+
+/* ---- Hero ---- */
+.hero { padding-block: 56px 36px; text-align: center; }
+.kicker {
+  font-size: 13px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--text-faint); margin-bottom: 14px;
+}
+h1.title { font-size: clamp(26px, 4.2vw, 38px); font-weight: 700; line-height: 1.25; text-wrap: balance; }
+.title .todo { color: var(--text-faint); font-style: italic; }
+.authors { margin-top: 20px; font-size: 17px; }
+.authors .todo { color: var(--text-faint); font-style: italic; }
+.affil { margin-top: 6px; font-size: 14.5px; color: var(--text-muted); }
+
+.links { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 999px; font-size: 14px; font-weight: 600;
+  text-decoration: none; background: var(--pill); color: var(--pill-text);
+  border: 1px solid var(--pill);
+}
+.pill.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+.pill.ghost .soon { color: var(--text-faint); font-weight: 500; }
+
+/* ---- Sections ---- */
+.band { background: var(--band); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+section.plain { padding-block: 40px; }
+section.plain + section.plain { border-top: 1px solid var(--border); }
+.band .inner { padding-block: 40px; }
+
+h2.section-title { font-size: 22px; font-weight: 700; margin: 0 0 16px; font-family: "Source Serif 4", Georgia, serif; }
+.center { text-align: center; }
+.justify { text-align: justify; }
+.lede { color: var(--text-muted); max-width: 62ch; margin: 0 auto; }
+
+p { margin: 0 0 14px; }
+.sub { font-weight: 700; display: block; margin-bottom: 6px; }
+
+ul.plain-list { margin: 0 0 14px; padding-left: 22px; }
+ul.plain-list li { margin-bottom: 6px; }
+
+.todo-fill { color: var(--text-faint); font-style: italic; }
+
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; margin: 18px 0; }
+.table-wrap { overflow-x: auto; }
+th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font-weight: 600; font-size: 12.5px; text-transform: uppercase; letter-spacing: .03em; color: var(--text-muted); border-bottom: 2px solid var(--border); }
+tr.total td { font-weight: 700; }
+td.num, th.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+
+dl.taxo { margin: 18px 0 0; }
+dl.taxo > div { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--border); align-items: baseline; }
+dl.taxo > div:last-child { border-bottom: none; }
+dl.taxo dt { flex: 0 0 auto; font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--text-faint); width: 44px; }
+dl.taxo dd { margin: 0; flex: 1 1 auto; min-width: 0; }
+.leak-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em;
+  background: var(--mark-soft); color: var(--mark); padding: 1px 7px; border-radius: 999px; margin-left: 8px; }
+
+.stat-line { display: flex; flex-wrap: wrap; gap: 28px; margin: 18px 0; }
+.stat-line div { min-width: 120px; }
+.stat-line b { display: block; font-family: "Source Serif 4", Georgia, serif; font-size: 26px; }
+.stat-line span { font-size: 13px; color: var(--text-muted); }
+
+pre.bibtex { background: var(--band); border: 1px solid var(--border); border-radius: 6px;
+  padding: 16px 18px; font-size: 13px; overflow-x: auto; margin: 0; }
+
+footer.plain { padding-block: 28px 48px; font-size: 13.5px; color: var(--text-muted); text-align: center; }
+footer.plain a { color: var(--text); text-decoration: underline; }
+</style>
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="kicker">Agentic Data Science Failure Analysis</div>
+    <h1 class="title title-font"><span class="todo">[Paper Title]</span></h1>
+    <div class="authors"><span class="todo">[Author Names]</span></div>
+    <div class="affil">Centrum Wiskunde &amp; Informatica (CWI)</div>
+
+    <div class="links">
+      <a class="pill" href="#">Paper</a>
+      <a class="pill" href="#">Code</a>
+      <a class="pill" href="#">Dataset</a>
+    </div>
+  </section>
+
+  <!-- ================= ABSTRACT ================= -->
+  <div class="band">
+    <div class="inner center">
+      <h2 class="section-title">Abstract</h2>
+      <p class="justify todo-fill" style="max-width:62ch;margin-inline:auto;">
+        [Abstract — replace with the paper's final abstract. Working summary:
+        we benchmark three agent scaffolds (ReAct, AIDE, MLEvolve) across five
+        model families on 220 real-world tabular ML tasks from five dataset
+        sources, judge every generated pipeline against a 15-mode failure
+        taxonomy with an LLM judge, and validate that judge against
+        independent human annotation.]
+      </p>
+    </div>
+  </div>
+
+  <!-- ================= BENCHMARK ================= -->
+  <section class="plain">
+    <h2 class="section-title">The benchmark</h2>
+    <span class="sub">What's in it?</span>
+    <p>220 real-world tabular ML tasks curated from five sources, spanning
+      regression and binary/multi-class classification, across eleven
+      application domains from healthcare to transportation.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Source</th><th class="num">Tasks</th><th class="num">Regression</th><th class="num">Binary</th><th class="num">Multi-class</th></tr></thead>
+        <tbody>
+          <tr><td>Kaggle</td><td class="num">44</td><td class="num">19</td><td class="num">17</td><td class="num">8</td></tr>
+          <tr><td>MLE-bench</td><td class="num">8</td><td class="num">6</td><td class="num">2</td><td class="num">0</td></tr>
+          <tr><td>OpenML</td><td class="num">36</td><td class="num">10</td><td class="num">15</td><td class="num">11</td></tr>
+          <tr><td>STRABLE</td><td class="num">108</td><td class="num">76</td><td class="num">13</td><td class="num">19</td></tr>
+          <tr><td>UCI</td><td class="num">24</td><td class="num">12</td><td class="num">7</td><td class="num">5</td></tr>
+          <tr class="total"><td>Total</td><td class="num">220</td><td class="num">123</td><td class="num">54</td><td class="num">43</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <span class="sub" style="margin-top:8px;display:block;">Failure mode taxonomy</span>
+    <p>Every generated pipeline is judged against 15 failure modes. Modes
+      marked <span class="leak-tag" style="margin-left:0;margin-right:6px;">leak</span>
+      let test information reach training and inflate the reported score; the
+      rest are correctness or rigor gaps that don't necessarily invalidate it.</p>
+
+    <dl class="taxo">
+      <div><dt>FM01</dt><dd>Wrong task formulation</dd></div>
+      <div><dt>FM02</dt><dd>Peeking at test data during EDA<span class="leak-tag">leak</span></dd></div>
+      <div><dt>FM03</dt><dd>Not cleaning data</dd></div>
+      <div><dt>FM04</dt><dd>Imputation before splitting<span class="leak-tag">leak</span></dd></div>
+      <div><dt>FM05</dt><dd>Ignoring temporal order<span class="leak-tag">leak</span></dd></div>
+      <div><dt>FM06</dt><dd>No train/val split</dd></div>
+      <div><dt>FM07</dt><dd>No feature engineering</dd></div>
+      <div><dt>FM08</dt><dd>Scaling before splitting<span class="leak-tag">leak</span></dd></div>
+      <div><dt>FM09</dt><dd>Feature selection before splitting<span class="leak-tag">leak</span></dd></div>
+      <div><dt>FM10</dt><dd>Wrong model type for task</dd></div>
+      <div><dt>FM11</dt><dd>No regularisation in DL</dd></div>
+      <div><dt>FM12</dt><dd>Naive ensembling</dd></div>
+      <div><dt>FM13</dt><dd>Reusing test set across variants<span class="leak-tag">leak</span></dd></div>
+      <div><dt>FM14</dt><dd>Single eval of stochastic model</dd></div>
+      <div><dt>FM15</dt><dd>Using only one eval metric</dd></div>
+    </dl>
+  </section>
+
+  <!-- ================= KEY FINDINGS ================= -->
+  <section class="plain">
+    <h2 class="section-title">Key findings</h2>
+
+    <span class="sub">Is the LLM judge trustworthy?</span>
+    <p>Every failure-mode verdict in this benchmark comes from an LLM judge.
+      We checked it against an independent human annotator on 19 randomly
+      sampled pipelines (285 individual ratings).</p>
+    <div class="stat-line">
+      <div><b>89.5%</b><span>raw agreement</span></div>
+      <div><b>0.62</b><span>Cohen's &kappa; (95% CI 0.50&ndash;0.73)</span></div>
+      <div><b>0.71</b><span>judge precision</span></div>
+      <div><b>0.65</b><span>judge recall</span></div>
+    </div>
+    <p>Precision is higher than recall throughout: when the judge flags a
+      failure it's usually right, but it misses some real ones — so the
+      failure rates reported in this benchmark are more likely an
+      under-estimate than an over-estimate.</p>
+
+    <span class="sub" style="margin-top:8px;display:block;">How do agents compare?</span>
+    <p class="todo-fill">[Headline cross-agent / cross-model results — e.g.
+      which agent scaffold fails least, which failure modes are most common,
+      how failure rate changes with hint level in the DSTS probe suite.
+      Fill in once final numbers are locked.]</p>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="plain">
+    <h2 class="section-title">Contact</h2>
+    <p>We welcome questions and suggestions. Reach out to
+      <a href="mailto:effy.li@cwi.nl">effy.li@cwi.nl</a>, or open an issue on
+      the code repository (<span class="todo-fill">link coming soon</span>).</p>
+  </section>
+
+  <!-- ================= CITATION ================= -->
+  <section class="plain">
+    <h2 class="section-title">Citation</h2>
+    <pre class="bibtex mono">@misc{<span class="todo-fill">authorYEAR</span>,
+  title  = {<span class="todo-fill">[Paper Title]</span>},
+  author = {<span class="todo-fill">[Author Names]</span>},
+  year   = {<span class="todo-fill">2027</span>},
+  note   = {<span class="todo-fill">[venue / arXiv id]</span>}
+}</pre>
+  </section>
+
+</div>
+
+<footer class="plain">
+  This page uses the layout of the
+  <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a>.
+  <br>License: <span class="todo-fill">TBD</span>.
+</footer>
