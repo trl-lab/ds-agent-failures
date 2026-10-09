@@ -37,6 +37,7 @@
 }
 
 * { box-sizing: border-box; }
+html { overflow-x: clip; }
 body {
   background: var(--bg);
   color: var(--text);
@@ -49,7 +50,7 @@ body {
 .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
 a { color: inherit; }
 
-.wrap { max-width: 760px; margin: 0 auto; }
+.wrap { max-width: 920px; margin: 0 auto; }
 
 /* ---- Hero ---- */
 .hero { padding-block: 56px 36px; text-align: center; }
@@ -74,7 +75,7 @@ h1.title { font-size: clamp(26px, 4.2vw, 38px); font-weight: 700; line-height: 1
 .pill.ghost .soon { color: var(--text-faint); font-weight: 500; }
 
 /* ---- Sections ---- */
-.band { background: var(--band); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.band { margin-inline: calc(50% - 50vw); background: var(--band); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 section.plain { padding-block: 40px; }
 section.plain + section.plain { border-top: 1px solid var(--border); }
 .band .inner { padding-block: 40px; }
@@ -118,15 +119,67 @@ pre.bibtex { background: var(--band); border: 1px solid var(--border); border-ra
 
 footer.plain { padding-block: 28px 48px; font-size: 13.5px; color: var(--text-muted); text-align: center; }
 footer.plain a { color: var(--text); text-decoration: underline; }
+
+/* ---- Compact abstract ---- */
+.band .inner.abstract { padding-block: 28px 24px; }
+.abstract h2.section-title { margin-bottom: 10px; }
+.abstract-text { font-size: 16px; line-height: 1.6; text-align: justify; max-width: 920px; margin: 0 auto; }
+.abstract-text p { margin: 0 0 10px; }
+  background: linear-gradient(to bottom, transparent, var(--band)); }
+
+/* ---- Figures ---- */
+figure.fig.teaser { margin: 36px auto 0; }
+figure.fig.teaser figcaption { text-align: center; max-width: 60ch; margin-inline: auto; font-size: 14.5px; }
+figure.fig { margin: 22px 0 26px; }
+figure.fig img { display: block; width: 100%; height: auto; background: #fff;
+  border: 1px solid var(--border); border-radius: 6px; padding: 10px; }
+figure.fig.narrow img { max-width: 520px; margin-inline: auto; }
+figure.fig figcaption { font-size: 13.5px; color: var(--text-muted); margin-top: 8px; line-height: 1.5; }
+figure.fig figcaption b { color: var(--text); }
+.fig-row { display: flex; gap: 14px; align-items: flex-start; }
+.fig-row img { min-width: 0; }
+.fig-row > img:first-child { flex: 2.6 1 0; }
+.fig-row > img:last-child { flex: 1 1 0; }
+@media (max-width: 600px) { .fig-row { flex-direction: column; } .fig-row > img { width: 100%; } }
+.fig-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
+.fig-scroll img { display: block; min-width: 1100px; width: 100%; height: auto; padding: 8px 12px;
+  border: 0; border-radius: 0; }
+.fig-scroll + .fig-scroll { margin-top: 10px; }
+
+/* ---- Heatmap table ---- */
+figure.fig.wide { width: min(940px, calc(100vw - 32px)); position: relative; left: 50%; transform: translateX(-50%); }
+table.heat { font-size: 12.5px; margin: 14px 0 0; }
+table.heat th, table.heat td { padding: 4px 5px; border-bottom: 1px solid var(--bg); }
+table.heat thead th { text-align: center; font-size: 11px; text-transform: none; letter-spacing: 0; }
+table.heat thead th:first-child { text-align: left; vertical-align: bottom; }
+table.heat thead th.grp { font-size: 12.5px; color: var(--text); border-bottom: 1px solid var(--border); }
+table.heat tbody th { font-weight: 400; text-align: left; white-space: nowrap; padding-right: 12px; }
+table.heat .fm { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--text-faint); margin-right: 8px; }
+table.heat td { text-align: center; min-width: 40px; }
+table.heat tbody th .leak-tag { margin-left: 6px; padding: 0 5px; font-size: 9px; }
+table.heat td.na { background: var(--band); color: var(--text-faint); }
+table.heat .gstart { border-left: 3px solid var(--bg); }
+
+/* ---- Leaderboard table ---- */
+table.lb { font-size: 13.5px; margin: 12px 0 0; }
+table.lb th, table.lb td { padding: 7px 8px; }
+table.lb thead th.grp { text-align: center; text-transform: none; letter-spacing: 0; font-size: 12.5px; color: var(--text); border-bottom: 1px solid var(--border); }
+table.lb thead tr:first-child th { border-bottom-width: 1px; }
+table.lb thead tr:first-child th:not(.grp) { border-bottom: none; }
+table.lb thead th.num { text-align: right; }
+table.lb td.metric { color: var(--text-muted); font-size: 12.5px; text-align: left; }
+table.lb th:nth-child(2) { text-align: left; }
+table.lb .gstart { border-left: 1px solid var(--border); }
+table.lb u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 </style>
 
 <div class="wrap">
 
   <!-- ================= HERO ================= -->
   <section class="hero">
-    <div class="kicker">Agentic Data Science Failure Analysis</div>
-    <h1 class="title title-font"><span class="todo">[Paper Title]</span></h1>
-    <div class="authors"><span class="todo">[Author Names]</span></div>
+    <!-- <div class="kicker">Agentic Data Science Failure Analysis</div> -->
+    <h1 class="title title-font"><span class="">The Silent Failures in Agentic Data Science</span></h1>
+    <div class="authors"><span class="">Xue Li, Hongqian Xia, Daniel Gomm, Aécio Santos, Cornelius Wolff, Madelon Hulsebos</span></div>
     <div class="affil">Centrum Wiskunde &amp; Informatica (CWI)</div>
 
     <div class="links">
@@ -134,24 +187,24 @@ footer.plain a { color: var(--text); text-decoration: underline; }
       <a class="pill" href="#">Code</a>
       <a class="pill" href="#">Dataset</a>
     </div>
+    <figure class="fig narrow teaser">
+      <img src="assets/pct_pipelines_with_failure.svg" alt="Bar chart: share of pipelines with at least one failure mode, per agent and model. Between 95% and 100% for all configurations except MLEvolve with Gemini-3.7 at 68%.">
+      <figcaption>Almost every agentic DS pipeline contains at least one failure mode, regardless of the agent scaffold or the underlying model.</figcaption>
+    </figure>
   </section>
 
   <!-- ================= ABSTRACT ================= -->
   <div class="band">
-    <div class="inner center">
-      <h2 class="section-title">Abstract</h2>
-      <p class="justify todo-fill" style="max-width:62ch;margin-inline:auto;">
-        [Abstract — replace with the paper's final abstract. Working summary:
-        we benchmark three agent scaffolds (ReAct, AIDE, MLEvolve) across five
-        model families on 220 real-world tabular ML tasks from five dataset
-        sources, judge every generated pipeline against a 15-mode failure
-        taxonomy with an LLM judge, and validate that judge against
-        independent human annotation.]
-      </p>
+    <div class="inner abstract" id="abstract">
+      <h2 class="section-title center">Abstract</h2>
+      <div class="abstract-text" id="abstract-text">
+        <p>Large language models have significantly lowered the barrier to writing code. Naturally, this has also led to the development of data science agents that promise automating the design and execution of data science from task formulation to model development. Existing evaluations of agentic data science (agentic DS) assess downstream predictive performance and code correctness, providing preliminary insight in agentic DS capabilities. We argue that these evaluations overlook the fundamental principles of data science: methodological data science- and domain knowledge. As such, only assessing downstream performance masks methodological failures such as data leakage and inappropriate validation, limiting the development of robust agentic DS systems. In this paper, we evaluate agentic DS beyond accuracy from three different angles: 1) a large-scale analysis of failure modes in common agentic DS frameworks and models across 220 data science tasks, 2) a reusable and extensible test suite with curated data science tasks that test for six specific failures in a controlled manner, and 3) a qualitative assessment of agentic DS pipelines against expert solutions on Kaggle competitions.</p>
+        <p>We find that the majority of agentic solutions contain at least one failure mode despite the complexity of agentic harness or model capacity. Moreover, we identify a positive correlation between the occurrence of data leakage failures and predictive performance, confirming the necessity to evaluate agents beyond accuracy. Our qualitative analysis shows that DS agents generally lack problem solving creativity and domain knowledge, compared to competition-winning data scientists. We believe that principled failure mode analysis, as presented here, should be integral part of agentic DS evaluations, and that the insights we surface will be key in developing trustworthy agentic DS pipelines.</p>
+      </div>
     </div>
   </div>
 
-  <!-- ================= BENCHMARK ================= -->
+  <!-- ================= BENCHMARK =================
   <section class="plain">
     <h2 class="section-title">The benchmark</h2>
     <span class="sub">What's in it?</span>
@@ -196,32 +249,98 @@ footer.plain a { color: var(--text); text-decoration: underline; }
       <div><dt>FM14</dt><dd>Single eval of stochastic model</dd></div>
       <div><dt>FM15</dt><dd>Using only one eval metric</dd></div>
     </dl>
-  </section>
+  </section> -->
 
   <!-- ================= KEY FINDINGS ================= -->
   <section class="plain">
     <h2 class="section-title">Key findings</h2>
 
-    <span class="sub">Is the LLM judge trustworthy?</span>
-    <p>Every failure-mode verdict in this benchmark comes from an LLM judge.
-      We checked it against an independent human annotator on 19 randomly
-      sampled pipelines (285 individual ratings).</p>
-    <div class="stat-line">
-      <div><b>89.5%</b><span>raw agreement</span></div>
-      <div><b>0.62</b><span>Cohen's &kappa; (95% CI 0.50&ndash;0.73)</span></div>
-      <div><b>0.71</b><span>judge precision</span></div>
-      <div><b>0.65</b><span>judge recall</span></div>
-    </div>
-    <p>Precision is higher than recall throughout: when the judge flags a
-      failure it's usually right, but it misses some real ones — so the
-      failure rates reported in this benchmark are more likely an
-      under-estimate than an over-estimate.</p>
+    <span class="sub" style="margin-top:8px;display:block;">Which failure modes are most common?</span>
+    <p>Breaking failures down by mode shows which mistakes each agent and model
+      makes most often.</p>
 
-    <span class="sub" style="margin-top:8px;display:block;">How do agents compare?</span>
-    <p class="todo-fill">[Headline cross-agent / cross-model results — e.g.
-      which agent scaffold fails least, which failure modes are most common,
-      how failure rate changes with hint level in the DSTS probe suite.
-      Fill in once final numbers are locked.]</p>
+    <figure class="fig wide">
+      <div class="table-wrap">
+<table class="heat">
+<thead>
+<tr><th rowspan="2">Failure mode</th><th colspan="3" class="grp">ReAct</th><th colspan="3" class="grp">AIDE</th><th colspan="3" class="grp">MLEvolve</th></tr>
+<tr><th class="mdl">Qwen-4B</th><th class="mdl">Qwen-27B</th><th class="mdl">Gemini-3.7</th><th class="mdl gstart">Qwen-4B</th><th class="mdl">Qwen-27B</th><th class="mdl">Gemini-3.7</th><th class="mdl gstart">Qwen-4B</th><th class="mdl">Qwen-27B</th><th class="mdl">Gemini-3.7</th></tr>
+</thead>
+<tbody>
+<tr><th scope="row"><span class="fm">FM01</span>Wrong task formulation</th><td class="num" style="background:#FEE7C5;color:#000000">0.02</td><td class="num" style="background:#FEE9CB;color:#000000">0.01</td><td class="num" style="background:#FEE4C0;color:#000000">0.02</td><td class="num gstart" style="background:#FEE9CA;color:#000000">0.01</td><td class="num" style="background:#FEE2BB;color:#000000">0.03</td><td class="num" style="background:#FEECD1;color:#000000">0.01</td><td class="num gstart" style="background:#FEE8C9;color:#000000">0.02</td><td class="num" style="background:#FEE8C9;color:#000000">0.01</td><td class="num" style="background:#FEEFD9;color:#000000">0.00</td></tr>
+<tr><th scope="row"><span class="fm">FM02</span>Peeking at test data during EDA<span class="leak-tag">leak</span></th><td class="num" style="background:#FEECD1;color:#000000">0.01</td><td class="num" style="background:#FDC089;color:#000000">0.12</td><td class="num" style="background:#FDD29C;color:#000000">0.07</td><td class="num gstart" style="background:#FEE6C4;color:#000000">0.02</td><td class="num" style="background:#FDCF99;color:#000000">0.08</td><td class="num" style="background:#FDB67F;color:#000000">0.15</td><td class="num gstart" style="background:#FEE8C9;color:#000000">0.02</td><td class="num" style="background:#FDCE98;color:#000000">0.08</td><td class="num" style="background:#FDC690;color:#000000">0.10</td></tr>
+<tr><th scope="row"><span class="fm">FM03</span>Not cleaning data</th><td class="num" style="background:#F98455;color:#000000">0.28</td><td class="num" style="background:#FDDCAF;color:#000000">0.04</td><td class="num" style="background:#F77D52;color:#000000">0.30</td><td class="num gstart" style="background:#BB0B07;color:#FFFFFF">0.72</td><td class="num" style="background:#FC9C67;color:#000000">0.21</td><td class="num" style="background:#E55038;color:#FFFFFF">0.45</td><td class="num gstart" style="background:#9C0000;color:#FFFFFF">0.86</td><td class="num" style="background:#FDAF79;color:#000000">0.17</td><td class="num" style="background:#FDC690;color:#000000">0.10</td></tr>
+<tr><th scope="row"><span class="fm">FM04</span>Imputation before splitting<span class="leak-tag">leak</span></th><td class="num" style="background:#FEEFD9;color:#000000">0.00</td><td class="num" style="background:#FDBE87;color:#000000">0.13</td><td class="num" style="background:#FDD5A0;color:#000000">0.06</td><td class="num gstart" style="background:#FDCF99;color:#000000">0.08</td><td class="num" style="background:#FEE2BB;color:#000000">0.03</td><td class="num" style="background:#FDBF88;color:#000000">0.13</td><td class="num gstart" style="background:#FDCA93;color:#000000">0.09</td><td class="num" style="background:#FEE0B8;color:#000000">0.03</td><td class="num" style="background:#FDC892;color:#000000">0.10</td></tr>
+<tr><th scope="row"><span class="fm">FM05</span>Ignoring temporal order<span class="leak-tag">leak</span></th><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#F26E4C;color:#000000">0.36</td><td class="num" style="background:#E24831;color:#FFFFFF">0.48</td><td class="num gstart" style="background:#FDBF88;color:#000000">0.13</td><td class="num" style="background:#FDB67F;color:#000000">0.15</td><td class="num" style="background:#E44D35;color:#FFFFFF">0.47</td><td class="num gstart" style="background:#FEE4C0;color:#000000">0.02</td><td class="num" style="background:#FDAD77;color:#000000">0.17</td><td class="num" style="background:#F26E4C;color:#000000">0.36</td></tr>
+<tr><th scope="row"><span class="fm">FM06</span>No train/val split</th><td class="num" style="background:#7F0000;color:#FFFFFF">1.00</td><td class="num" style="background:#FDDAAB;color:#000000">0.05</td><td class="num" style="background:#EE6246;color:#FFFFFF">0.40</td><td class="num gstart" style="background:#FDD19B;color:#000000">0.07</td><td class="num" style="background:#FEEFD8;color:#000000">0.01</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num gstart" style="background:#BE0F0A;color:#FFFFFF">0.69</td><td class="num" style="background:#FEEBD0;color:#000000">0.01</td><td class="num" style="background:#FEEFD9;color:#000000">0.00</td></tr>
+<tr><th scope="row"><span class="fm">FM07</span>No feature engineering</th><td class="num" style="background:#820000;color:#FFFFFF">0.98</td><td class="num" style="background:#DF412C;color:#FFFFFF">0.50</td><td class="num" style="background:#F06849;color:#000000">0.38</td><td class="num gstart" style="background:#8C0000;color:#FFFFFF">0.93</td><td class="num" style="background:#BB0B07;color:#FFFFFF">0.71</td><td class="num" style="background:#FDC18A;color:#000000">0.12</td><td class="num gstart" style="background:#8C0000;color:#FFFFFF">0.94</td><td class="num" style="background:#FDB37D;color:#000000">0.16</td><td class="num" style="background:#FEEFD9;color:#000000">0.00</td></tr>
+<tr><th scope="row"><span class="fm">FM08</span>Scaling before splitting<span class="leak-tag">leak</span></th><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FEEFD9;color:#000000">0.00</td><td class="num gstart" style="background:#FEE6C4;color:#000000">0.02</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FEE0B7;color:#000000">0.03</td><td class="num gstart" style="background:#FEE8C9;color:#000000">0.02</td><td class="num" style="background:#FEEFD9;color:#000000">0.00</td><td class="num" style="background:#FEE9CB;color:#000000">0.01</td></tr>
+<tr><th scope="row"><span class="fm">FM09</span>Feature selection before splitting<span class="leak-tag">leak</span></th><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FEE0B7;color:#000000">0.03</td><td class="num" style="background:#FDCD96;color:#000000">0.08</td><td class="num gstart" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FEE8C8;color:#000000">0.02</td><td class="num" style="background:#FDBA83;color:#000000">0.14</td><td class="num gstart" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FEEBD0;color:#000000">0.01</td><td class="num" style="background:#FDD5A0;color:#000000">0.06</td></tr>
+<tr><th scope="row"><span class="fm">FM10</span>Wrong model type for task</th><td class="num" style="background:#FEE9CB;color:#000000">0.01</td><td class="num" style="background:#FEEFD9;color:#000000">0.00</td><td class="num" style="background:#FEEFD9;color:#000000">0.00</td><td class="num gstart" style="background:#FEDFB5;color:#000000">0.03</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num gstart" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FEEFD9;color:#000000">0.00</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td></tr>
+<tr><th scope="row"><span class="fm">FM11</span>No regularisation in DL</th><td class="na">–</td><td class="na">–</td><td class="na">–</td><td class="na gstart">–</td><td class="na">–</td><td class="na">–</td><td class="na gstart">–</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td></tr>
+<tr><th scope="row"><span class="fm">FM12</span>Naive ensembling</th><td class="na">–</td><td class="num" style="background:#E0442F;color:#FFFFFF">0.49</td><td class="num" style="background:#930000;color:#FFFFFF">0.90</td><td class="na gstart">–</td><td class="num" style="background:#A60000;color:#FFFFFF">0.81</td><td class="num" style="background:#E54E36;color:#FFFFFF">0.46</td><td class="na gstart">–</td><td class="num" style="background:#DE3F2B;color:#FFFFFF">0.51</td><td class="num" style="background:#FDDBAC;color:#000000">0.04</td></tr>
+<tr><th scope="row"><span class="fm">FM13</span>Reusing test set across variants<span class="leak-tag">leak</span></th><td class="na">–</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="na">–</td><td class="na gstart">–</td><td class="na">–</td><td class="num" style="background:#FFFFFF;color:#000000">0.00</td><td class="na gstart">–</td><td class="num" style="background:#FDD5A0;color:#000000">0.06</td><td class="num" style="background:#FEEDD4;color:#000000">0.01</td></tr>
+<tr><th scope="row"><span class="fm">FM14</span>Single eval of stochastic model</th><td class="num" style="background:#E14630;color:#FFFFFF">0.48</td><td class="num" style="background:#890000;color:#FFFFFF">0.95</td><td class="num" style="background:#FDDBAD;color:#000000">0.04</td><td class="num gstart" style="background:#FDA56F;color:#000000">0.19</td><td class="num" style="background:#FDCC96;color:#000000">0.08</td><td class="num" style="background:#FEDFB5;color:#000000">0.03</td><td class="num gstart" style="background:#7F0000;color:#FFFFFF">1.00</td><td class="num" style="background:#B30000;color:#FFFFFF">0.76</td><td class="num" style="background:#FDBD86;color:#000000">0.13</td></tr>
+<tr><th scope="row"><span class="fm">FM15</span>Using only one eval metric</th><td class="num" style="background:#FDB982;color:#000000">0.15</td><td class="num" style="background:#960000;color:#FFFFFF">0.89</td><td class="num" style="background:#FDBC85;color:#000000">0.14</td><td class="num gstart" style="background:#9B0000;color:#FFFFFF">0.87</td><td class="num" style="background:#9E0000;color:#FFFFFF">0.85</td><td class="num" style="background:#990000;color:#FFFFFF">0.88</td><td class="num gstart" style="background:#F4734E;color:#000000">0.34</td><td class="num" style="background:#990000;color:#FFFFFF">0.87</td><td class="num" style="background:#E9583E;color:#FFFFFF">0.43</td></tr>
+</tbody>
+</table>
+</div>
+      <figcaption>Occurrence rate per failure modes (FM) by agent and model over the pipelines for which the FM is applicable. N/A indicates that the number of applicable pipelines for a given FM is less than 20. Red indicates leakage modes and blue indicates non-leakage modes.</figcaption>
+    </figure>
+
+    <figure class="fig narrow">
+      <img src="assets/failure_mode_distribution.svg" alt="Horizontal bar chart of the share of all 4,549 detected failure instances by failure mode. Most frequent: FM15 using only one eval metric (23.8%), FM07 no feature engineering (18.9%), FM14 single eval of stochastic model (12.8%), FM03 not cleaning data (11.8%). FM11 no regularisation in DL is 0%." loading="lazy">
+      <figcaption>Failure-mode distribution. All detected failure instances (n=4,549) by failure mode over 1,761 pipelines, averaging 2.58 failures per pipeline. Red: leakage modes; blue: other modes. </figcaption>
+    </figure>
+
+    <span class="sub" style="margin-top:8px;display:block;">Do failures inflate scores?</span>
+    <p>Leakage failure modes are associated with <em>better</em> predictive
+      performance, while non-leakage failures go with worse performance. Predictive performance alone masks the silent failures.</p>
+    <figure class="fig narrow">
+      <img src="assets/perf_vs_judge_effects_slopegraph.svg" alt="Slopegraph of rank residual when each failure mode is absent versus present. Leakage modes (red) slope downward toward better performance; non-leakage modes such as FM06 and FM12 slope upward toward worse performance." loading="lazy">
+      <figcaption>Adjusted effect of FMs on residual rank in the test set that is accessible to the agent. A high rank indicates worse performance, while a low rank indicates better performance (* indicates significance).</figcaption>
+    </figure>
+
+    <span class="sub" style="margin-top:8px;display:block;">Controlled test suite</span>
+    <p>Six curated tasks each probe one specific failure. More explicit hints
+      lower fail rates for ReAct and AIDE, but not consistently for MLEvolve.</p>
+    <figure class="fig">
+      <div class="fig-row">
+        <img src="assets/failure_modes_nohint.svg" alt="Bar charts of fail rate per agent for six test-suite failures (TF01 to TF06) without hints, for gemini-3.7-flash and gpt-5.6-sol." loading="lazy">
+        <img src="assets/failure_modes_by_hint.svg" alt="Line charts of fail rate by hint level 1 to 4 for ReAct, AIDE and MLEvolve, for gemini-3.7-flash and gpt-5.6-sol." loading="lazy">
+      </div>
+      <figcaption>Left: Results for the curated test suite of failure modes. Failure rate represents failure occurrences per failure mode, averaged over n = 5 runs. A failure rate of 1.0 means it occurs in every run. Right: Average FMs per hint level. Hint level 1 is no hint; higher is more explicit.</figcaption>
+    </figure>
+
+    <span class="sub" style="margin-top:8px;display:block;">Agents vs. expert solutions</span>
+    <p>On five Kaggle challenges, no agent beats the 1st-place human solution
+      on either the private or the public leaderboard.</p>
+    <figure class="fig">
+      <div class="table-wrap">
+      <table class="lb">
+        <thead>
+          <tr><th></th><th></th><th colspan="3" class="grp">Data science agents</th><th class="grp gstart">AutoML</th><th class="grp gstart">Baseline</th></tr>
+          <tr><th>Challenge</th><th>Metric</th><th class="num">ReAct</th><th class="num">AIDE</th><th class="num">MLEvolve</th><th class="num gstart">AutoGluon</th><th class="num gstart">1st place (human)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single-Cell Perturbations</td><td class="metric">MRRMSE &darr;</td><td class="num">1.1020 / 0.7690</td><td class="num">0.8970 / 0.6600</td><td class="num"><u>0.8310</u> / <u>0.6170</u></td><td class="num gstart">– / –</td><td class="num gstart"><b>0.7290</b> / <b>0.5230</b></td></tr>
+          <tr><td>Heart Disease Prediction</td><td class="metric">AUC-ROC &uarr;</td><td class="num">0.9547 / 0.9531</td><td class="num">0.9549 / 0.9533</td><td class="num">0.9546 / 0.9531</td><td class="num gstart"><u>0.9551</u> / <u>0.9536</u></td><td class="num gstart"><b>0.9554</b> / <b>0.9542</b></td></tr>
+          <tr><td>Obesity Risk</td><td class="metric">Accuracy &uarr;</td><td class="num">0.9065 / <u>0.9090</u></td><td class="num">0.9059 / 0.9025</td><td class="num">0.9071 / 0.9035</td><td class="num gstart"><u>0.9074</u> / 0.9075</td><td class="num gstart"><b>0.9116</b> / <b>0.9234</b></td></tr>
+          <tr><td>Problematic Internet Use</td><td class="metric">QWK &uarr;</td><td class="num"><u>0.4440</u> / <u>0.4680</u></td><td class="num">0.4280 / 0.4640</td><td class="num">0.4170 / 0.4480</td><td class="num gstart">– / –</td><td class="num gstart"><b>0.4820</b> / <b>0.5010</b></td></tr>
+          <tr><td>Survival Predictions</td><td class="metric">C-index &uarr;</td><td class="num">0.6502 / 0.6465</td><td class="num"><u>0.6536</u> / <u>0.6488</u></td><td class="num">0.3155 / 0.3233</td><td class="num gstart">– / –</td><td class="num gstart"><b>0.7013</b> / <b>0.6981</b></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <figcaption>Leaderboard performance across Kaggle challenges. Scores are <b>private / public</b>. Best overall score in bold, second-best underlined. AutoGluon applies only to challenges with CSV uploads (Heart Disease Prediction and Obesity Risk), which are simpler playground tasks.</figcaption>
+    </figure>
+
+    <figure class="fig">
+      <div class="fig-scroll"><img src="assets/pipeline-vanilla.svg" alt="ReAct pipeline diagram, annotated with failure modes FM02, FM03, FM07 and FM12." loading="lazy"></div>
+      <div class="fig-scroll"><img src="assets/pipeline-aide.svg" alt="AIDE pipeline diagram." loading="lazy"></div>
+      <div class="fig-scroll"><img src="assets/pipeline-ml-evolve.svg" alt="MLEvolve pipeline diagram." loading="lazy"></div>
+      <div class="fig-scroll"><img src="assets/pipeline-1st-place.svg" alt="1st-place Kaggle solution pipeline diagram." loading="lazy"></div>
+      <figcaption>Pipeline comparison. ReAct, AIDE and MLEvolve pipelines vs. the competition-winning solution.</figcaption>
+    </figure>
   </section>
 
   <!-- ================= CONTACT ================= -->
@@ -232,7 +351,7 @@ footer.plain a { color: var(--text); text-decoration: underline; }
       the code repository (<span class="todo-fill">link coming soon</span>).</p>
   </section>
 
-  <!-- ================= CITATION ================= -->
+  <!-- ================= CITATION =================
   <section class="plain">
     <h2 class="section-title">Citation</h2>
     <pre class="bibtex mono">@misc{<span class="todo-fill">authorYEAR</span>,
@@ -241,7 +360,7 @@ footer.plain a { color: var(--text); text-decoration: underline; }
   year   = {<span class="todo-fill">2027</span>},
   note   = {<span class="todo-fill">[venue / arXiv id]</span>}
 }</pre>
-  </section>
+  </section> -->
 
 </div>
 
